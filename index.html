@@ -14,7 +14,8 @@
     --blue: #2F7D4F;
     --blue-deep: #1E5C39;
     --green: #3FA06B;
-    --paper: #FFFFFF;
+    --paper: #F3F9F4;
+    --mint: #E3F3E8;
     --paper-line: #DCE7DE;
     --steel: #5B6961;
     --stamp: #B8432E;
@@ -55,9 +56,8 @@
     position: sticky;
     top: 0;
     z-index: 30;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: saturate(140%) blur(6px);
-    border-bottom: 1px solid var(--paper-line);
+    background: var(--blue);
+    border-bottom: 1px solid var(--blue-deep);
   }
   .header-inner{
     max-width: 1120px;
@@ -72,19 +72,20 @@
     font-weight: 600;
     font-size: 19px;
     letter-spacing: 0.2px;
+    color: #EAF3EC;
   }
   .wordmark small{
     display: block;
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
     font-size: 11.5px;
-    color: var(--steel);
+    color: #B9D9C4;
     letter-spacing: 0.3px;
     margin-top: 1px;
   }
   nav{ display:flex; gap: 32px; font-size: 14.5px; font-weight: 500; }
-  nav a{ color: var(--ink); border-bottom: 1.5px solid transparent; padding-bottom: 3px; }
-  nav a:hover{ border-color: var(--green); }
+  nav a{ color: #EAF3EC; border-bottom: 1.5px solid transparent; padding-bottom: 3px; }
+  nav a:hover{ border-color: #EAF3EC; }
 
   /* ---------- Hero ---------- */
   .hero{ padding: 76px 0 88px; overflow: hidden; }
@@ -132,13 +133,36 @@
   }
 
   .seal-wrap{ position: relative; display:flex; justify-content:center; }
-  .seal-wrap svg{ width: 100%; max-width: 340px; height: auto; }
+  .seal-wrap::before{
+    content: "";
+    position: absolute;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, var(--mint) 0%, rgba(227,243,232,0) 70%);
+    z-index: 0;
+  }
+  .seal-wrap svg{ width: 100%; max-width: 340px; height: auto; position: relative; z-index: 1; }
+
+  @keyframes steamRise{
+    0%   { transform: translateY(4px) scaleY(0.9); opacity: 0; }
+    20%  { opacity: 0.9; }
+    75%  { opacity: 0.15; }
+    100% { transform: translateY(-16px) scaleY(1.05); opacity: 0; }
+  }
+  .steam-line{
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: steamRise 2.8s ease-in-out infinite;
+  }
+  .steam-line:nth-child(2){ animation-delay: 0.55s; }
+  .steam-line:nth-child(3){ animation-delay: 1.1s; }
+  @media (prefers-reduced-motion: reduce){
+    .steam-line{ animation: none; opacity: 0.6; }
+  }
 
   /* ---------- Intro strip ---------- */
   .intro-strip{
-    border-top: 1px solid var(--paper-line);
-    border-bottom: 1px solid var(--paper-line);
-    padding: 30px 0;
+    background: var(--ink);
+    padding: 34px 0;
   }
   .intro-strip .wrap{
     display: flex;
@@ -150,11 +174,11 @@
   .intro-item .k{
     font-family: 'IBM Plex Serif', serif;
     font-size: 26px;
-    color: var(--blue);
+    color: var(--green);
   }
   .intro-item .v{
     font-size: 13.5px;
-    color: var(--steel);
+    color: #B9C7BE;
     margin-top: 4px;
   }
 
@@ -174,15 +198,17 @@
     display: grid;
     grid-template-columns: 130px 1fr;
     gap: 40px;
-    padding: 46px 0;
-    border-top: 1px solid var(--paper-line);
+    padding: 46px 36px;
+    margin: 0 -36px;
+    border-radius: 6px;
   }
-  .services > .wrap > .service:last-child{ border-bottom: 1px solid var(--paper-line); }
+  .service:nth-child(even){ background: var(--mint); }
 
   .service-num{
     font-family: 'IBM Plex Serif', serif;
     font-size: 44px;
-    color: var(--paper-line);
+    color: var(--green);
+    opacity: 0.55;
     line-height: 1;
   }
   .service-body h3{
@@ -200,25 +226,33 @@
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(2, minmax(200px, 260px));
-    gap: 8px 32px;
+    gap: 10px 32px;
     max-width: 620px;
   }
   .service-includes div{
     display: flex;
-    align-items: flex-start;
-    gap: 9px;
+    align-items: center;
+    gap: 12px;
     font-size: 14px;
     color: #3A443E;
   }
-  .service-includes svg{
-    width: 15px; height: 15px;
-    margin-top: 3px;
+  .service-includes .check-chip{
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-    color: var(--green);
+    margin-top: 1px;
+  }
+  .service-includes svg{
+    width: 12px; height: 12px;
+    color: #fff;
   }
 
   @media (max-width: 700px){
-    .service{ grid-template-columns: 1fr; gap: 10px; }
+    .service{ grid-template-columns: 1fr; gap: 10px; padding: 30px 20px; margin: 0 -20px; }
     .service-num{ font-size: 30px; }
     .service-includes{ grid-template-columns: 1fr; }
   }
@@ -252,8 +286,9 @@
   /* ---------- Contact / CTA ---------- */
   .contact{ padding: 88px 0; }
   .contact-panel{
-    background: #fff;
-    border: 1px solid var(--paper-line);
+    background: var(--mint);
+    border: 1px solid #CDE9D5;
+    border-left: 5px solid var(--green);
     border-radius: 4px;
     padding: 52px;
     display: grid;
@@ -284,7 +319,7 @@
     gap: 16px;
   }
   footer nav{ gap: 24px; font-size: 13.5px; }
-  footer .wordmark{ font-size: 15px; }
+  footer .wordmark{ font-size: 15px; color: var(--green); }
   .footer-legal{ font-size: 12.5px; color: var(--steel); margin-top: 18px; }
 
   /* ---------- Responsive ---------- */
@@ -325,7 +360,18 @@
         <circle cx="150" cy="150" r="146" stroke="#2F7D4F" stroke-width="1.5" stroke-dasharray="2 5"/>
         <circle cx="150" cy="150" r="122" stroke="#2F7D4F" stroke-width="1.5"/>
         <circle cx="150" cy="150" r="92" fill="#EAF3EC" stroke="#1E5C39" stroke-width="1.5"/>
-        <path d="M116 150 L140 174 L188 122" stroke="#1E5C39" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <g class="steam-group">
+          <path class="steam-line" d="M132,132 C124,118 140,110 132,96" stroke="#3FA06B" stroke-width="4.5" stroke-linecap="round"/>
+          <path class="steam-line" d="M150,128 C142,114 158,106 150,92" stroke="#3FA06B" stroke-width="4.5" stroke-linecap="round"/>
+          <path class="steam-line" d="M168,132 C160,118 176,110 168,96" stroke="#3FA06B" stroke-width="4.5" stroke-linecap="round"/>
+        </g>
+
+        <circle cx="150" cy="140" r="5" fill="#1E5C39"/>
+        <path d="M98,178 A52,42 0 0 1 202,178 Z" fill="#1E5C39"/>
+        <ellipse cx="150" cy="180" rx="60" ry="10" fill="#1E5C39"/>
+        <ellipse cx="150" cy="180" rx="48" ry="5.5" fill="#EAF3EC" opacity="0.35"/>
+
         <g font-family="IBM Plex Sans" font-size="10.5" letter-spacing="3" fill="#2F7D4F">
           <text x="150" y="45" text-anchor="middle">CUMPLIMIENTO SANITARIO</text>
           <text x="150" y="265" text-anchor="middle">INOCUIDAD · HIGIENE · SALUD</text>
@@ -365,10 +411,10 @@
         <h3>Plan de Capacitación en Manipulación de Alimentos</h3>
         <p>Capacitación dirigida al personal que interviene en la manipulación de alimentos, orientada a las buenas prácticas de higiene, prevención de contaminación y manejo seguro de los productos.</p>
         <div class="service-includes">
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Capacitación en manipulación de alimentos</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Certificación de las horas cursadas</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Certificado médico para manipuladores</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Orientación en buenas prácticas de higiene e inocuidad</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Capacitación en manipulación de alimentos</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Certificación de las horas cursadas</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Certificado médico para manipuladores</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Orientación en buenas prácticas de higiene e inocuidad</div>
         </div>
       </div>
     </div>
@@ -379,11 +425,11 @@
         <h3>Plan de Saneamiento</h3>
         <p>Diseño y asesoría en la implementación del Plan de Saneamiento, de acuerdo con las necesidades y características de cada establecimiento.</p>
         <div class="service-includes">
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Limpieza y desinfección</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Manejo y control de residuos</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Control de plagas</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Abastecimiento y calidad del agua</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Procedimientos y registros de control sanitario</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Limpieza y desinfección</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Manejo y control de residuos</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Control de plagas</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Abastecimiento y calidad del agua</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Procedimientos y registros de control sanitario</div>
         </div>
       </div>
     </div>
@@ -410,11 +456,11 @@
         <h3>Asesoría y Trámites ante INVIMA</h3>
         <p>Acompañamiento técnico en procesos relacionados con el Instituto Nacional de Vigilancia de Medicamentos y Alimentos (INVIMA).</p>
         <div class="service-includes">
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Trámites y solicitudes sanitarias</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Revisión de requisitos y documentación</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Registro, permiso o notificación sanitaria</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Acompañamiento ante la autoridad sanitaria</div>
-          <div><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 10l4 4 8-8"/></svg>Orientación para el cumplimiento de requisitos aplicables</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Trámites y solicitudes sanitarias</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Revisión de requisitos y documentación</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Registro, permiso o notificación sanitaria</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Acompañamiento ante la autoridad sanitaria</div>
+          <div><span class="check-chip"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M4 10l4 4 8-8"/></svg></span>Orientación para el cumplimiento de requisitos aplicables</div>
         </div>
       </div>
     </div>
